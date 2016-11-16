@@ -1,6 +1,4 @@
-"use strict";
 import { FETCH_PLAYERS, FETCH_PLAYER_DETAIL } from '../constants/playerActionTypes'
-import * as lodash from 'lodash'
 
 export default function playersReducer(state = {
     players: [],
@@ -8,11 +6,12 @@ export default function playersReducer(state = {
     }, action) {
     switch (action.type) {
         case FETCH_PLAYERS:
-            return lodash.assignIn({}, state, {
+            console.log('action.players', action.players);
+            return Object.assign({}, state, {
                 players: action.players
             });
         case FETCH_PLAYER_DETAIL:
-            return lodash.assignIn({}, state, {
+            return Object.assign({}, state, {
                 player_details: state.player_details.concat(action.player_detail)
             });
         default:

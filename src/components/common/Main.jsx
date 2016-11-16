@@ -1,4 +1,3 @@
-"use strict";
 import React from 'react'
 import { render } from 'react-dom'
 import { Link } from 'react-router'
@@ -11,6 +10,7 @@ class App extends React.Component {
            
             <div className="container">
                 <Link to={"/PlayerSearch"}>PlayerSearch</Link>
+                <Link to={"/Hello"}>Hello</Link>
                 {this.props.children}
             </div>
         )
