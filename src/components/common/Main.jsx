@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 class App extends React.Component {
     render() {
         return (
-           
             <div className="container">
                 <Link to={"/PlayerSearch"}>PlayerSearch</Link>
                 <Link to={"/Hello"}>Hello</Link>
