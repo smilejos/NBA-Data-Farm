@@ -1,0 +1,9 @@
+export const FETCHING = 'FETCHING'
+export const FETCH_SUCCESS = 'FETCH_SUCCESS'
+export const FETCH_FAIL = 'FETCH_FAIL'
+
+export const FETCH_PLAYERS = 'FETCH_PLAYERS'
+export const FETCH_PLAYER_DETAIL = 'FETCH_PLAYER_DETAIL'
+
+export const FETCH_TEAMS = 'FETCH_TEAMS'
+export const FETCH_TEAM_DETAIL = 'FETCH_TEAM_DETAIL'

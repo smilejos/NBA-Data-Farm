@@ -1,4 +1,4 @@
-import { FETCHING, FETCH_SUCCESS, FETCH_FAIL } from '../constants/commonActionTypes';
+import { FETCHING, FETCH_SUCCESS, FETCH_FAIL } from '../constants/actionTypes';
 
 export function fetchData() {
 	return {

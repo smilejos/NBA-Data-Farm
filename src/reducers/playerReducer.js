@@ -1,4 +1,4 @@
-import { FETCH_PLAYERS, FETCH_PLAYER_DETAIL } from '../constants/playerActionTypes'
+import { FETCH_PLAYERS, FETCH_PLAYER_DETAIL } from '../constants/actionTypes'
 
 export default function playersReducer(state = {
     players: [],

@@ -1,9 +1,9 @@
-import { FETCH_PLAYERS, FETCH_PLAYER_DETAIL } from '../constants/actionTypes';
+import { FETCH_TEAMS, FETCH_TEAM_DETAIL } from '../constants/actionTypes';
 import { fetchData, fetchDataSuccess, fetchDataFail } from './commonAction';
 import service from '../services'
 
 function shouldFetchFromNetwork(state) {
-    return state.playerReducer.players.length == 0;
+    return state.teamReducer.teams.length == 0;
 }
 
 function fetchPlayersFromNetwork() {

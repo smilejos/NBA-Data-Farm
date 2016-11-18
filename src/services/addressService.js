@@ -1,11 +1,5 @@
-const d = new Date()
-const currentMonth = d.getMonth() + 1
-let season
-if (currentMonth >= 10) {
-    season = d.getFullYear().toString() + '-' + (d.getFullYear() + 1).toString().substring(2, 4)
-} else {
-    season = (d.getFullYear().toString() - 1) + '-' + d.getFullYear().toString().substring(2, 4)
-}
+import constant from '../constants/serviceConstant'
+import * as util from '../utility'
 
 const address = {
     /**
@@ -34,15 +28,35 @@ const address = {
     },
 
     playerList: () => {
-        return `http://stats.nba.com/stats/commonallplayers?IsOnlyCurrentSeason=0&LeagueID=00&Season=${season}`
+        let API_METHOD = 'commonallplayers';
+        let Params = {
+            'IsOnlyCurrentSeason' : 0,
+            'LeagueID' : constant.League_ID,
+            'Season' : constant.Current_Season()
+        };    
+        return constant.API_URL + API_METHOD + '?' + util.extractParameters(Params);    
     },
 
     playerInfo: (id) => {
-        return `http://stats.nba.com/stats/commonplayerinfo?LeagueID=00&PlayerID=${id}&SeasonType=Regular+Season`
+        let API_METHOD = 'commonplayerinfo';
+        let Params = {
+            'PlayerID' : id,
+            'LeagueID' : constant.League_ID,
+            'SeasonType' : constant.SeasonType.Regular
+        };    
+        return constant.API_URL + API_METHOD + '?' + util.extractParameters(Params);    
     },
 
     playerLog: (id) => {
-        return `http://stats.nba.com/stats/playergamelog?LeagueID=00&PerMode=PerGame&PlayerID=${id}&Season=${season}&SeasonType=Regular+Season`
+        let API_METHOD = 'playergamelog';
+        let Params = {
+            'PlayerID' : id,
+            'LeagueID' : constant.League_ID,
+            'PerMode' : constant.PerMode.PerGame,
+            'Season' : constant.Current_Season(),
+            'SeasonType' : constant.SeasonType.Regular
+        };    
+        return constant.API_URL + API_METHOD + '?' + util.extractParameters(Params);    
     },
 
     /**
