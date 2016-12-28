@@ -2,7 +2,7 @@ import { FETCH_TEAMS, FETCH_TEAM_DETAIL } from '../constants/actionTypes'
 
 export default function teamReducer(state = {
     teams: [],
-    team_details: []
+    team_players: []
     }, action) {
     switch (action.type) {
         case FETCH_TEAMS:

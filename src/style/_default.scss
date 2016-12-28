@@ -1,5 +1,24 @@
 .container {
-    background: #eee;
+    background: #fff;
     font-size: 16px;
     color:#310055;
+}
+
+.stats_container {
+    .grid_header,
+    .grid_body {
+        width: 100%;
+    }
+
+    .stats_highlight {
+        color: red;
+    }
+
+    .stats_normal {
+        color: #000;
+    }
+
+    .stats_unqualified {
+        color: #008000;
+    }
 }

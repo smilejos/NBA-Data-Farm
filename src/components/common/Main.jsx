@@ -10,6 +10,7 @@ class App extends React.Component {
             <div className="container">
                 <Link to={"/PlayerSearch"}>PlayerSearch</Link>
                 <Link to={"/Hello"}>Hello</Link>
+                <Link to={"/Player/2544"}>Player</Link>
                 {this.props.children}
             </div>
         )

@@ -49,7 +49,14 @@ const Service = {
         const url = address.playerLog(id)
         return fetch(url)
             .then(res => res.json())
-            .then(data => producer.playerLog(data))
+            .then(data => producer.playerLog(data));
+    },
+
+    getPlayerCareerStats: (id) => {
+        const url = address.playerCareerStats(id)
+        return fetch(url)
+            .then(res => res.json())
+            .then(data => producer.playerCareerStats(data));
     },
 
     getTeamRank: (year, month, date) => {
@@ -60,31 +67,30 @@ const Service = {
     },
 
     getTeamInfo: (id) => {
-        const url = address.teamInfo(id)
+        const url = address.teamInfo(id);
         return fetch(url)
             .then(res => res.json())
-            .then(data => producer.teamInfo(data))
+            .then(data => producer.teamInfo(data));
     },
 
     getTeamDetail: (id) => {
         /* Get players data and basic info */
-        const url = address.teamDetail(id)
-        const urlBasic = address.teamDetailBasic(id)
+        const url_detail = address.teamDetail(id);
+        const url_roster = address.teamRoster(id);
         return Promise.all([
-            fetch(url)
+            fetch(url_detail)
                 .then(res => res.json())
                 .then(data => producer.teamDetail(data)),
-            fetch(urlBasic)
+            fetch(url_roster)
                 .then(res => res.json())
-                .then(data => producer.teamDetailBasic(data))
-        ])
-            .then(result => {
-                const playerData = result[0]
-                const playerInfo = result[1]
-                return playerData.map(player => {
-                    return Object.assign({}, player, playerInfo[player.id])
-                })
-            })
+                .then(data => producer.teamRoster(data))
+        ]).then(result => {
+            const playerData = result[0];
+            const playerInfo = result[1];
+            return playerData.map(player => {
+                return Object.assign({}, player, playerInfo[player.id]);
+            });
+        });
     }
 }
 

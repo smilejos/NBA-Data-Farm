@@ -1,3 +1,5 @@
+import * as util from '../utility'
+
 const producer = {
     /**
      * return {live: [], unstart: [], over: []}
@@ -182,60 +184,42 @@ const producer = {
     },
 
     /**
-     * @return {id:, firstName, lastName,pts, ast, reb, team, jersey, height, weight, birthday, position, affiliation}
+     * @return {person_id, first_name, last_name, display_first_last, display_last_comma_first, display_fi_last, birthdate, school, country, last_affiliation,
+     * height, weight, season_exp, jersey, position, rosterstatus, team_id, team_name, team_abbreviation, team_code, team_city, playercode, from_year, to_year,
+     * dleague_flag, games_played_flag, draft_year, draft_round, draft_number}
      */
     playerInfo: (res) => {
-        const basicInfo = res.resultSets[0].rowSet[0]
-        const gameInfo = res.resultSets[1].rowSet[0]
-        return {
-            id: basicInfo[0],
-            firstName: basicInfo[1],
-            lastName: basicInfo[2],
-            pts: gameInfo[3],
-            ast: gameInfo[4],
-            reb: gameInfo[5],
-            team: basicInfo[18],
-            jersey: basicInfo[13],
-            height: basicInfo[10],
-            weight: basicInfo[11],
-            birthday: basicInfo[6].split('T')[0],
-            position: basicInfo[14],
-            affiliation: basicInfo[9]
-        }
+        return util.extractStatsResult(res.resultSets[0])[0]
     },
 
     /**
-     * @return [{gameId, gameDate, matchup, result, min, pts, fg,
-     * fgRate, threeP, threePRate, ft, ftRate, reb, ast, stl, blk, tov, foul, plusMinus}]
+     * @return {
+     *  totals_regular: [{player_id, season_id, league_id, team_id, team_abbreviation, player_age, gp, gs, min, fgm, fga, fg_pct, fg3m, fg3a, fg3_pct, ftm, fta, ft_pct, oreb, dreb, reb, ast, stl, blk, tov, pf, pts}]
+     *  career_regular: [{player_id, league_id, team_id, gp, gs, min, fgm, fga, fg_pct, fg3m, fg3a, fg3_pct, ftm, fta, ft_pct, oreb, dreb, reb, ast, stl, blk, tov, pf, pts}]
+     *  totals_playoff: [{player_id, season_id, league_id, team_id, team_abbreviation, player_age, gp, gs, min, fgm, fga, fg_pct, fg3m, fg3a, fg3_pct, ftm, fta, ft_pct, oreb, dreb, reb, ast, stl, blk, tov, pf, pts}]
+     *  career_playoff: [{player_id, league_id, team_id, gp, gs, min, fgm, fga, fg_pct, fg3m, fg3a, fg3_pct, ftm, fta, ft_pct, oreb, dreb, reb, ast, stl, blk, tov, pf, pts}]
+     *  totals_allStar: [{player_id, season_id, league_id, team_id, team_abbreviation, player_age, gp, gs, min, fgm, fga, fg_pct, fg3m, fg3a, fg3_pct, ftm, fta, ft_pct, oreb, dreb, reb, ast, stl, blk, tov, pf, pts}]
+     *  career_allStar: [{player_id, league_id, team_id, gp, gs, min, fgm, fga, fg_pct, fg3m, fg3a, fg3_pct, ftm, fta, ft_pct, oreb, dreb, reb, ast, stl, blk, tov, pf, pts}]
+     * }
      */
-    playerLog: (res) => {
-        const logs = res.resultSets[0].rowSet
-
-        return logs.map(item => {
-            return {
-                gameId: item[0],
-                gameDate: item[3],
-                matchup: item[4],
-                result: item[5],
-                min: item[6],
-                pts: item[24],
-                fg: item[7] + '-' + item[8],
-                fgRate: item[9],
-                threeP: item[10] + '-' + item[11],
-                threePRate: item[12],
-                ft: item[13] + '-' + item[14],
-                ftRate: item[15],
-                reb: item[18],
-                ast: item[19],
-                stl: item[20],
-                blk: item[21],
-                tov: item[22],
-                foul: item[23],
-                plusMinus: item[25]
-            }
-        })
+    playerCareerStats: (res) => {
+        return {
+            totals_regular: util.extractStatsResult(res.resultSets[0]),
+            career_regular: util.extractStatsResult(res.resultSets[1])[0],
+            totals_playoff: util.extractStatsResult(res.resultSets[2]),
+            career_playoff: util.extractStatsResult(res.resultSets[3])[0],
+            totals_allStar: util.extractStatsResult(res.resultSets[4]),
+            career_allStar: util.extractStatsResult(res.resultSets[5])[0]
+        };
     },
 
+    /**
+     * @return [{season_id, player_id, game_id, game_date, matchup, wl, min, fgm, fga, fg_pct, fg3m, fg3a, fg3_pct, ftm, fta, ft_pct, oreb, dreb, reb, ast, stl, blk, tov, pf, pts, plus_minus, video_available}]
+     */
+    playerLog: (res) => {
+        return util.extractStatsResult(res.resultSets[0])
+    },
+    
     /**
      * @return {eastern: [{id, name, win, loss}], western:[]}
      */
@@ -251,7 +235,7 @@ const producer = {
                 id: item[0],
                 name: item[5],
                 win: item[8],
-                loss: item[7]
+                loss: item[7]   
             })
             anotherItem = westData[index]
             western.push({
@@ -276,20 +260,31 @@ const producer = {
         const info = res.resultSets[0].rowSet[0]
         const dataInfo = res.resultSets[1].rowSet[0]
         return {
-            teamCity: info[2],
-            teamName: info[3],
-            teamAbbr: info[4],
-            teamConf: info[5],
-            teamDivi: info[6],
-            confRank: info[11],
-            diviRank: info[12],
-            win: info[8],
-            loss: info[9],
-            id: info[0],
-            ptsRank: dataInfo[3],
-            rebRank: dataInfo[5],
-            astRank: dataInfo[7],
-            oppRank: dataInfo[9]
+            id : info[0],
+            season_year : info[1],
+            team_city : info[2],
+            team_name : info[3],
+            team_abbr : info[4],
+            team_conf : info[5],
+            team_div : info[6],
+            team_code : info[7],
+            win : info[8],
+            lose : info[9],
+            pct : info[10],
+            conf_rank : info[11],
+            div_rank : info[12],
+            min_year : info[13],
+            max_year : info[14],
+            league_id : dataInfo[0],
+            season_id : dataInfo[1],
+            pts_rank : dataInfo[3],
+            pts_pg : dataInfo[4],
+            reb_rank : dataInfo[5],
+            reb_pg : dataInfo[6],
+            ast_rank : dataInfo[7],
+            ast_pg : dataInfo[8],
+            opp_pts_rank : dataInfo[9],
+            opp_pts_pg : dataInfo[10]
         }
     },
 
@@ -298,15 +293,75 @@ const producer = {
      */
     teamDetail: (res) => {
         const target = res.resultSets[1].rowSet
+        // let result = {}
+        // target.forEach(player => {
+        //     result[player[1]] = {
+        //         group_set : player[0],
+        //         id : player[1],
+        //         name : player[2],
+        //         gp : player[3],
+        //         win : player[4],
+        //         loss : player[5],
+        //         w_pct : player[6],
+        //         min : player[7],
+        //         fgm : player[8],
+        //         fga : player[9],
+        //         fg_pct : player[10],
+        //         fg3m : player[11],
+        //         fg3a : player[12],
+        //         fg3_pct : player[13],
+        //         ftm : player[14],
+        //         fta : player[15],
+        //         ft_pct : player[16],
+        //         oreb : player[17],
+        //         dreb : player[18],
+        //         reb : player[19],
+        //         ast : player[20],
+        //         tov : player[21],
+        //         stl : player[22],
+        //         blk : player[23],
+        //         blka : player[24],
+        //         pf : player[25],
+        //         pfd : player[26],
+        //         pts : player[27],
+        //         plus_minus : player[28],
+        //         dd2 : player[29],
+        //         td3 : player[30]
+        //     }
+        // })
+
         return target.map(player => {
             return {
-                id: player[1],
-                name: player[2],
-                gp: player[3],
-                pts: player[27],
-                reb: player[19],
-                ast: player[20],
-                min: player[7]
+                id : player[1],
+                name : player[2],
+                gp : player[3],
+                win : player[4],
+                loss : player[5],
+                w_pct : player[6],
+                min : player[7],
+                fgm : player[8],
+                fga : player[9],
+                fg_pct : player[10],
+                fg3m : player[11],
+                fg3a : player[12],
+                fg3_pct : player[13],
+                ftm : player[14],
+                fta : player[15],
+                ft_pct : player[16],
+                oreb : player[17],
+                dreb : player[18],
+                reb : player[19],
+                ast : player[20],
+                tov : player[21],
+                stl : player[22],
+                blk : player[23],
+                blka : player[24],
+                pf : player[25],
+                pfd : player[26],
+                pts : player[27],
+                plus_minus : player[28],
+                dd2 : player[29],
+                td3 : player[30]
             }
         })
     },
@@ -314,20 +369,28 @@ const producer = {
     /**
      * @return {id: {pos, height, weight, num, age}}
      */
-    teamDetailBasic: (res) => {
-        const target = res.resultSets[0].rowSet
-        let result = {}
+    teamRoster: (res) => {
+        const target = res.resultSets[0].rowSet;
+        let result = {};
         target.forEach(player => {
             result[player[12]] = {
-                pos: player[5],
+                teamid: player[0],
+                season: player[1],
+                leagueid: player[2],
+                player: player[3],
+                num: player[4],
+                position: player[5],
                 height: player[6],
                 weight: player[7],
-                num: player[4],
-                age: player[9]
+                birth_date: player[8],
+                age: player[9],
+                exp: player[10],
+                school: player[11],
+                id: player[12]
             }
-        })
-        return result
+        });
+        return result;
     }
 }
 
-export default producer
+export default producer;

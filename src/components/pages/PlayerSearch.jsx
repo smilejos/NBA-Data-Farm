@@ -16,6 +16,7 @@ class PlayerSearch extends React.Component {
         }
 
         fetchPlayers();
+        
     }
 
     _handleChange() {
@@ -37,10 +38,11 @@ class PlayerSearch extends React.Component {
     }
 
     _renderPlayComponent() {
-        let list = this._filterPlayers().map(function (player, index) {
+        let raw = this._filterPlayers();
+        let list = raw.map(function (player, index) {
             let teamObj = teamAttr[player.teamAbbr.toLowerCase()];
-            let imgStyle = { backgroundColor: teamObj.color };
-            return <li key={index}>{player.name}at {player.teamAbbr} <img className="team" style={imgStyle} src={teamObj.logo} /></li>
+            let imgStyle = { backgroundColor: teamObj ? player.color : "#fff" };
+            return <li key={index}>{player.name}at {player.teamAbbr} <img className="team" style={imgStyle} src={teamObj ? teamObj.logo : ""} /></li>
         });
         return list;
     }
