@@ -17,6 +17,7 @@
     "npm": "^4.0.5",
     "react": "^15.3.2",
     "react-bootstrap-table": "^3.0.0-beta.2",
+    "react-burger-menu": "^1.10.10",
     "react-data-grid": "^1.0.75",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",

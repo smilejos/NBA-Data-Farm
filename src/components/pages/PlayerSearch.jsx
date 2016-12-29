@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { bindActionCreators  } from 'redux'
+import { bindActionCreators } from 'redux'
+import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import * as playerAction from '../../actions/playerAction'
 import teamAttr from '../../constants/teamAttribute'
@@ -42,7 +43,12 @@ class PlayerSearch extends React.Component {
         let list = raw.map(function (player, index) {
             let teamObj = teamAttr[player.teamAbbr.toLowerCase()];
             let imgStyle = { backgroundColor: teamObj ? player.color : "#fff" };
-            return <li key={index}>{player.name}at {player.teamAbbr} <img className="team" style={imgStyle} src={teamObj ? teamObj.logo : ""} /></li>
+            return (
+                <div key={index}>
+                    <img className="team" style={imgStyle} src={teamObj ? teamObj.logo : ""} />
+                    <Link to={"/Player/" + player.id}>{player.name}</Link> at {player.teamAbbr}
+                </div>
+            )
         });
         return list;
     }
@@ -55,7 +61,9 @@ class PlayerSearch extends React.Component {
                 <input type="checkbox" ref="chkExist" checked={this.state.isSearchExistPlayer} onChange={this._handleChange.bind(this)} />
                 <h1>{this.props.commonState.isFetching ? "Fetching" : "Completed"}</h1>
                 <h1>{this.props.commonState.isSuccess}</h1>
-                {list}
+                <div>
+                    {list}
+                </div>
             </div>
         );
     }

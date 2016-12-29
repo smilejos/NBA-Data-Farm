@@ -85,8 +85,8 @@ export default {
         team: 'Rockets',
         color: '#CE1141',
         conf: 'western',
-        logo: 'assets/img/hou.png',
-    logo2: 'assets/img/hou2.png'
+        logo: 'assets/img/hou2.png',
+        logo2: 'assets/img/hou.png'
         },
     ind: {
         id: 1610612754,

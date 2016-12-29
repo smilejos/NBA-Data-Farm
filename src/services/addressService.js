@@ -30,7 +30,7 @@ const address = {
     playerList: () => {
         let API_METHOD = 'commonallplayers';
         let Params = {
-            'IsOnlyCurrentSeason' : 0,
+            'IsOnlyCurrentSeason' : 1,
             'LeagueID' : constant.League_ID,
             'Season' : constant.Current_Season()
         };    
